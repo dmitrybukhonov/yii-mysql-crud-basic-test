@@ -6,7 +6,7 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'bookcatalog', 'image'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -42,14 +42,15 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
+        'urlManager' => require 'url-manager.php',
+    ],
+    'modules' => [
+        'bookcatalog' => [
+            'class' => 'app\modules\bookcatalog\Module',
         ],
-        */
+        'image' => [
+            'class' => 'app\modules\image\Module',
+        ],
     ],
     'params' => $params,
 ];
