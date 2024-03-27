@@ -35,18 +35,24 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <?php $this->beginBody() ?>
 
     <header id="header">
-        <?php
-        NavBar::begin([
+        <?php NavBar::begin([
             'brandLabel' => Yii::$app->name,
             'brandUrl' => Yii::$app->homeUrl,
             'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
-        ]);
-        echo Nav::widget([
+        ]) ?>
+        <?= Nav::widget([
             'options' => ['class' => 'navbar-nav'],
             'items' => [
-                ['label' => 'Book', 'url' => ['/bookcatalog/book/index']],
+                Yii::$app->user->isGuest
+                    ? ['label' => 'Book Catalog', 'url' => ['/bookcatalog/book/catalog']]
+                    : '',
+                Yii::$app->user->isGuest
+                    ? ''
+                    : ['label' => 'Book', 'url' => ['/bookcatalog/book/index']],
                 ['label' => 'Author', 'url' => ['/bookcatalog/author/index']],
-                ['label' => 'Authors top', 'url' => ['/bookcatalog/author/top']],
+                Yii::$app->user->isGuest
+                    ? ''
+                    : ['label' => 'Authors top', 'url' => ['/bookcatalog/author/top']],
                 Yii::$app->user->isGuest
                     ? ['label' => 'Login', 'url' => ['/site/login']]
                     : '<li class="nav-item">'
@@ -58,9 +64,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     . Html::endForm()
                     . '</li>'
             ]
-        ]);
-        NavBar::end();
-        ?>
+        ]) ?>
+        <?php NavBar::end() ?>
     </header>
 
     <main id="main" class="flex-shrink-0" role="main">
