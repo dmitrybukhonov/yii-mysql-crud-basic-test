@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= $form->field($model, 'year') ?>
 <?= $form->field($model, 'description') ?>
 <?= $form->field($model, 'isbn') ?>
+<?= $form->field($model, 'cover_image_id')->label('ID изображения обложки')->textInput(['readonly' => true]) ?>
 <?= $form->field($model, 'cover_image')->fileInput() ?>
 <?= $form->field($model, 'author_list')->widget(Select2::class, [
     'data' => $authorList,

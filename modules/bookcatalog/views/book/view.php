@@ -2,8 +2,9 @@
 
 use yii\web\View;
 use yii\helpers\Html;
-use app\models\book\Book;
 use yii\widgets\DetailView;
+use app\modules\bookcatalog\models\Book;
+use app\modules\image\helpers\ImageHelper;
 
 /**
  * @var View $this
@@ -32,5 +33,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'year',
         'description',
         'isbn',
+        [
+            'attribute' => 'cover_image',
+            'format' => 'raw',
+            'value' => function ($book) {
+                return Html::img(
+                    ImageHelper::getImageUrl($book, 'cover_image_id'),
+                    [
+                        'class' => 'img-thumbnail',
+                        'style' => 'width: 200px; height: 300px;'
+                    ]
+                );
+            },
+        ],
     ],
 ]) ?>
