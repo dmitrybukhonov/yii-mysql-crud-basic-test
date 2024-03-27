@@ -3,8 +3,8 @@
 use yii\web\View;
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\grid\ActionColumn;
 use yii\data\ActiveDataProvider;
+use app\widgets\grid\ActionColumn;
 
 /**
  * @var View $this

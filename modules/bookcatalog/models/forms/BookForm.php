@@ -6,6 +6,7 @@ use yii\base\Model;
 use app\modules\bookcatalog\models\Book;
 use app\modules\bookcatalog\models\Author;
 use app\modules\image\services\SingleImageUpload;
+use app\modules\subscribe\component\SubscriptionNotifier;
 
 class BookForm extends Model
 {
@@ -84,9 +85,10 @@ class BookForm extends Model
 
             if ($this->saveAuthors($book) && $this->saveCoverImage($book)) {
                 $book->cover_image_id = $this->cover_image;
-
-                return $book->save();
+                $book->save();
             }
+
+            return true;
         }
 
         return false;
@@ -109,10 +111,14 @@ class BookForm extends Model
     {
         $book->unlinkAll('authors', true);
 
-        foreach ($this->author_list as $authorId) {
-            $author = Author::findOne($authorId);
-            if ($author !== null) {
-                $book->link('authors', $author);
+        if (is_array($this->author_list)) {
+            foreach ($this->author_list as $authorId) {
+                $author = Author::findOne($authorId);
+                if ($author !== null) {
+                    $book->link('authors', $author);
+
+                    SubscriptionNotifier::notifySubscribersAboutNewBook($author);
+                }
             }
         }
 

@@ -3,8 +3,9 @@
 use yii\web\View;
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\grid\ActionColumn;
 use yii\data\ActiveDataProvider;
+use app\widgets\grid\ActionColumn;
+use app\modules\subscribe\widgets\model\ModelSubscriptionWidget;
 
 /**
  * @var View $this
@@ -37,7 +38,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'full_name',
         [
             'class' => ActionColumn::class,
-            'template' => '{view} {update} {delete}',
+            'template' => '{view} {update} {delete} {subscribe}', // Добавляем кнопку подписки
+            'buttons' => [
+                'subscribe' => function ($url, $model, $key) {
+                    return ModelSubscriptionWidget::widget([
+                        'entity_id' => $model->id,
+                        'entity' => get_class($model),
+                    ]);
+                },
+            ],
         ],
     ]
 ]) ?>
