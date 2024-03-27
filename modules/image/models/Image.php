@@ -2,7 +2,6 @@
 
 namespace app\modules\image\models;
 
-use Yii;
 use yii\db\ActiveRecord;
 
 /**
