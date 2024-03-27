@@ -1,6 +1,9 @@
 # phpstorm project files
 .idea
 
+# vscode
+settings.json
+
 # netbeans project files
 nbproject
 
@@ -8,12 +11,16 @@ nbproject
 .buildpath
 .project
 .settings
+.env
 
 # windows thumbnail cache
 Thumbs.db
 
 # composer vendor dir
 /vendor
+
+# Image module
+/web/storage
 
 # composer itself is not needed
 composer.phar
