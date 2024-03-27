@@ -6,6 +6,8 @@ use Yii;
 use Throwable;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 use yii\web\BadRequestHttpException;
@@ -27,6 +29,25 @@ class BookController extends BaseController
         parent::__construct($id, $module, $config);
 
         $this->repository = $repository;
+    }
+
+    /**
+     * @return string
+     */
+    public function actionCatalog(): string
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => $this->repository->getModel(),
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+        ]);
+
+        return $this->render('catalog', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
@@ -148,5 +169,31 @@ class BookController extends BaseController
             'model' => $model,
             'authorList' => $authorList,
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors(): array
+    {
+        $behaviors = [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['catalog', 'index', 'create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['catalog' ,'view'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+
+        return ArrayHelper::merge($behaviors, parent::behaviors());
     }
 }
